@@ -54,7 +54,7 @@ class GameState:
         self.playerMaxVelY =  10   # max vel along Y, max descend speed
         self.playerMinVelY =  -8   # min vel along Y, max ascend speed
         self.playerAccY    =   1   # players downward accleration
-        self.playerFlapAcc =  -7   # players speed on flapping
+        self.playerFlapAcc =  -9   # players speed on flapping
         self.playerFlapped = False # True when player flaps
 
     def frame_step(self, input_actions):
@@ -85,7 +85,7 @@ class GameState:
 
         # playerIndex basex change
         if (self.loopIter + 1) % 3 == 0:
-            self.playerIndex = PLAYER_INDEX_GEN.next()
+            self.playerIndex = next(PLAYER_INDEX_GEN)
         self.loopIter = (self.loopIter + 1) % 30
         self.basex = -((-self.basex + 100) % self.baseShift)
 
@@ -123,7 +123,7 @@ class GameState:
             #SOUNDS['die'].play()
             terminal = True
             self.__init__()
-            reward = -5
+            reward = -1
 
         # draw sprites
         SCREEN.blit(IMAGES['background'], (0,0))
@@ -218,8 +218,8 @@ def pixelCollision(rect1, rect2, hitmask1, hitmask2):
     x1, y1 = rect.x - rect1.x, rect.y - rect1.y
     x2, y2 = rect.x - rect2.x, rect.y - rect2.y
 
-    for x in xrange(rect.width):
-        for y in xrange(rect.height):
+    for x in range(rect.width):
+        for y in range(rect.height):
             if hitmask1[x1+x][y1+y] and hitmask2[x2+x][y2+y]:
                 return True
     return False
